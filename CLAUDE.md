@@ -14,8 +14,10 @@ Located in `.claude/skills/`:
 
 - **writing-plans**: use before touching code, when given a spec or multi-step task. Plans must be bite-sized, name files to touch, follow DRY / YAGNI / TDD, and assume the executor knows nothing about this codebase.
 - **executing-plans**: use when you have a written plan to execute. Load it, review critically, execute, report.
+- **using-git-worktrees**: use when starting isolated feature work, or before executing an implementation plan that touches many files. Creates an isolated worktree so the main checkout stays clean.
 - **dispatching-parallel-agents**: use when 2+ tasks are independent (different test files, different subsystems). One agent per problem domain, concurrent.
 - **test-driven-development**: use for any feature or bugfix. Write the test first, watch it fail, write minimal code to pass. The TDD scope here is the **data pipeline and eval harness**, not training loops.
+- **systematic-debugging**: use when encountering any bug, test failure, or unexpected behavior, before proposing fixes. Root-cause first; do not patch symptoms.
 - **karpathy-guidelines**: behavioral checks against common LLM coding mistakes. Think before coding, surface assumptions, make surgical changes, define verifiable success criteria.
 
 When you start a task that matches one of these, announce it (e.g. "I'm using the writing-plans skill...") and follow the SKILL.md instructions.
