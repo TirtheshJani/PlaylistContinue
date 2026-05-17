@@ -17,6 +17,7 @@ dependencies = [
     "pandas>=2.2",
     "scikit-learn>=1.4",
     "tqdm>=4.66",
+    "gensim>=4.3",
 ]
 
 [project.optional-dependencies]
