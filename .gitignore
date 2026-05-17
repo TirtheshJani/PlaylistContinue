@@ -19,3 +19,7 @@ venv/
 htmlcov/
 *.log
 results.json
+
+# frontend
+frontend/node_modules/
+frontend/dist/
