@@ -78,3 +78,14 @@ class TwoTowerModel(Recommender):
         scores = self._item_vecs @ user_vec
         order = np.argsort(-scores)
         return [int(i) for i in order if i not in seed_set][:n]
+
+    def save(self, path: str) -> None:
+        import pickle
+        with open(path, "wb") as f:
+            pickle.dump(self, f)
+
+    @classmethod
+    def load(cls, path: str) -> "TwoTowerModel":
+        import pickle
+        with open(path, "rb") as f:
+            return pickle.load(f)

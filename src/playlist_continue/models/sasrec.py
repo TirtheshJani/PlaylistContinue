@@ -124,3 +124,14 @@ class SASRecReranker:
             cand_vecs = F.normalize(self._net.item_embed(cand_tensor), dim=-1)
             scores = (cand_vecs @ user_vec).cpu().numpy()
         return [candidates[i] for i in np.argsort(-scores)]
+
+    def save(self, path: str) -> None:
+        import pickle
+        with open(path, "wb") as f:
+            pickle.dump(self, f)
+
+    @classmethod
+    def load(cls, path: str) -> "SASRecReranker":
+        import pickle
+        with open(path, "rb") as f:
+            return pickle.load(f)

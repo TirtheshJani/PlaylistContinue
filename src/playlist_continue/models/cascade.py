@@ -137,3 +137,14 @@ class CascadeRecommender(Recommender):
             ranked = self.lgbm.rank(features)
             candidates = [candidates[i] for i in ranked]
         return candidates[:n]
+
+    def save(self, path: str) -> None:
+        import pickle
+        with open(path, "wb") as f:
+            pickle.dump(self, f)
+
+    @classmethod
+    def load(cls, path: str) -> "CascadeRecommender":
+        import pickle
+        with open(path, "rb") as f:
+            return pickle.load(f)

@@ -27,3 +27,14 @@ class LGBMScoringHead:
     def rank(self, X: np.ndarray) -> list[int]:
         """Return row indices sorted by descending relevance score."""
         return list(np.argsort(-self.score(X)))
+
+    def save(self, path: str) -> None:
+        import pickle
+        with open(path, "wb") as f:
+            pickle.dump(self, f)
+
+    @classmethod
+    def load(cls, path: str) -> "LGBMScoringHead":
+        import pickle
+        with open(path, "rb") as f:
+            return pickle.load(f)
