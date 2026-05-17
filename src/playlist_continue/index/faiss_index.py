@@ -4,8 +4,10 @@ from __future__ import annotations
 import numpy as np
 import faiss
 
+from playlist_continue.index.base import BaseIndex
 
-class FaissIndex:
+
+class FaissIndex(BaseIndex):
     """Inner-product flat index (cosine after L2-normalizing vectors)."""
 
     def __init__(self, dim: int) -> None:

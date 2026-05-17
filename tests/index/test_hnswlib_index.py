@@ -1,6 +1,8 @@
 import numpy as np
+import pytest
 
-from playlist_continue.index.faiss_index import FaissIndex
+from playlist_continue.index.base import BaseIndex
+from playlist_continue.index.hnswlib_index import HnswlibIndex
 
 
 def _unit_vecs(n: int, d: int, seed: int = 0) -> np.ndarray:
@@ -10,9 +12,14 @@ def _unit_vecs(n: int, d: int, seed: int = 0) -> np.ndarray:
     return vecs
 
 
+def test_hnswlib_is_base_index_instance():
+    idx = HnswlibIndex(dim=16)
+    assert isinstance(idx, BaseIndex)
+
+
 def test_search_returns_shape():
     vecs = _unit_vecs(20, 16)
-    idx = FaissIndex(dim=16)
+    idx = HnswlibIndex(dim=16)
     idx.build(vecs)
     result = idx.search(vecs[0:1], k=5)
     assert result.shape == (1, 5)
@@ -20,7 +27,7 @@ def test_search_returns_shape():
 
 def test_top1_is_self():
     vecs = _unit_vecs(20, 16)
-    idx = FaissIndex(dim=16)
+    idx = HnswlibIndex(dim=16)
     idx.build(vecs)
     result = idx.search(vecs[3:4], k=1)
     assert result[0, 0] == 3
@@ -28,20 +35,21 @@ def test_top1_is_self():
 
 def test_save_and_load_gives_same_results(tmp_path):
     vecs = _unit_vecs(20, 16)
-    idx = FaissIndex(dim=16)
+    idx = HnswlibIndex(dim=16)
     idx.build(vecs)
-    path = str(tmp_path / "test.index")
+    path = str(tmp_path / "test.bin")
     idx.save(path)
-    idx2 = FaissIndex(dim=16)
+    idx2 = HnswlibIndex(dim=16, max_elements=20)
     idx2.load(path)
     r1 = idx.search(vecs[0:1], k=3)
     r2 = idx2.search(vecs[0:1], k=3)
     np.testing.assert_array_equal(r1, r2)
 
 
-def test_faiss_index_is_base_index_instance():
-    from playlist_continue.index.base import BaseIndex
-    vecs = _unit_vecs(10, 8)
-    idx = FaissIndex(dim=8)
+def test_search_k_larger_than_index(tmp_path):
+    """k > n_items should not crash - return what's available."""
+    vecs = _unit_vecs(5, 8)
+    idx = HnswlibIndex(dim=8)
     idx.build(vecs)
-    assert isinstance(idx, BaseIndex)
+    result = idx.search(vecs[0:1], k=10)
+    assert result.shape[1] <= 10
