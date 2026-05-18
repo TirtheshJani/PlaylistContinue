@@ -67,3 +67,37 @@ The cascade ordering matters: a sequence model cannot score the whole catalog, a
 ## Branch policy
 
 Active development branch is `claude/music-recommendation-system-a1qbZ`. Do not push to `main` without explicit instruction.
+
+## Commands
+
+```bash
+# Install deps
+uv pip install -e ".[dev]" --system
+
+# Run tests
+python -m pytest tests/
+
+# Lint
+ruff check . && ruff format --check .
+
+# Ingest raw LFM-2b TSV chunks -> parquet
+python scripts/ingest_lfm2b.py --input-dir /data/lfm2b/raw/ --output data/processed/events.parquet
+
+# Freeze eval split (run once after ingestion)
+python scripts/freeze_eval_set.py --events data/processed/events.parquet
+
+# Compare all 6 models on frozen eval
+python scripts/compare_models.py --events data/processed/events.parquet
+
+# Run end-to-end pipeline
+python scripts/run_pipeline.py --events data/processed/events.parquet
+
+# Serve locally
+uvicorn playlist_continue.serve.main:app --host 0.0.0.0 --port 8000
+
+# Build frontend
+cd frontend && npm run build
+
+# Build Docker serve image
+docker build -t playlist-continue-serve .
+```
