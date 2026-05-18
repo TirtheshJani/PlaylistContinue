@@ -35,9 +35,9 @@ class ArtistCooccurrenceRecommender(Recommender):
             self._artist_tracks[a].sort(key=lambda t: -self._global_popularity[t])
 
         # Build artist co-occurrence from sessions.
-        session_ids = pc.unique(events.column("session_id")).to_pylist()
+        session_ids = pc.unique(events.column("session_id")).to_pylist()  # type: ignore[attr-defined]
         for sid in session_ids:
-            mask = pc.equal(events.column("session_id"), sid)
+            mask = pc.equal(events.column("session_id"), sid)  # type: ignore[attr-defined]
             session = events.filter(mask)
             session_artists = list(set(session.column("artist_id").to_pylist()))
             for i, a1 in enumerate(session_artists):

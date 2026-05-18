@@ -40,7 +40,7 @@ class HnswlibIndex(BaseIndex):
             labels = labels.astype(np.int64)
             pad = np.full((labels.shape[0], k - k_clamped), -1, dtype=np.int64)
             labels = np.concatenate([labels, pad], axis=1)
-        return labels
+        return labels  # type: ignore[no-any-return]
 
     def save(self, path: str) -> None:
         assert self._index is not None

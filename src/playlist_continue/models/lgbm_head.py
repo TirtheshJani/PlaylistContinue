@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import lightgbm as lgb
 import numpy as np
 
@@ -23,7 +25,7 @@ class LGBMScoringHead:
 
     def score(self, X: np.ndarray) -> np.ndarray:
         """Return (N,) relevance probabilities."""
-        return self._model.predict_proba(X)[:, 1]  # type: ignore[return-value]
+        return self._model.predict_proba(X)[:, 1]  # type: ignore[no-any-return]
 
     def rank(self, X: np.ndarray) -> list[int]:
         """Return row indices sorted by descending relevance score."""
@@ -40,4 +42,4 @@ class LGBMScoringHead:
         import pickle
 
         with open(path, "rb") as f:
-            return pickle.load(f)
+            return cast(LGBMScoringHead, pickle.load(f))

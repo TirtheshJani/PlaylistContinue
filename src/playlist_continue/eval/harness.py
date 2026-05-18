@@ -20,16 +20,16 @@ def evaluate(
     For each session: first `seed_fraction` tracks are the seed;
     the remainder are ground truth.
     """
-    session_ids = pc.unique(eval_set.column("session_id")).to_pylist()
+    session_ids = pc.unique(eval_set.column("session_id")).to_pylist()  # type: ignore[attr-defined]
     rp_scores: list[float] = []
     ndcg_scores: list[float] = []
     recall_scores: list[float] = []
 
     for sid in session_ids:
-        mask = pc.equal(eval_set.column("session_id"), sid)
+        mask = pc.equal(eval_set.column("session_id"), sid)  # type: ignore[attr-defined]
         session = eval_set.filter(mask)
-        order = pc.sort_indices(session, sort_keys=[("timestamp", "ascending")])
-        tracks = pc.take(session.column("track_id"), order).to_pylist()
+        order = pc.sort_indices(session, sort_keys=[("timestamp", "ascending")])  # type: ignore[attr-defined]
+        tracks = pc.take(session.column("track_id"), order).to_pylist()  # type: ignore[no-untyped-call]
 
         n_seed = max(1, int(len(tracks) * seed_fraction))
         seed = tracks[:n_seed]

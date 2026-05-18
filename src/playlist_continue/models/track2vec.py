@@ -34,13 +34,13 @@ class Track2VecRecommender(Recommender):
         self._known_tracks: set[int] = set()
 
     def fit(self, events: pa.Table) -> None:
-        session_ids = pc.unique(events.column("session_id")).to_pylist()
+        session_ids = pc.unique(events.column("session_id")).to_pylist()  # type: ignore[attr-defined]
         sequences: list[list[str]] = []
         for sid in session_ids:
-            mask = pc.equal(events.column("session_id"), sid)
+            mask = pc.equal(events.column("session_id"), sid)  # type: ignore[attr-defined]
             session = events.filter(mask)
-            order = pc.sort_indices(session, sort_keys=[("timestamp", "ascending")])
-            tracks = pc.take(session.column("track_id"), order).to_pylist()
+            order = pc.sort_indices(session, sort_keys=[("timestamp", "ascending")])  # type: ignore[attr-defined]
+            tracks = pc.take(session.column("track_id"), order).to_pylist()  # type: ignore[no-untyped-call]
             # Word2Vec expects string tokens.
             sequences.append([str(t) for t in tracks])
 

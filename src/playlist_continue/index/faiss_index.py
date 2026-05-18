@@ -24,7 +24,7 @@ class FaissIndex(BaseIndex):
         """Return (n_queries, k) array of item indices."""
         assert self._index is not None, "call build() or load() first"
         _, indices = self._index.search(query.astype(np.float32), k)
-        return indices
+        return indices  # type: ignore[no-any-return]
 
     def save(self, path: str) -> None:
         assert self._index is not None

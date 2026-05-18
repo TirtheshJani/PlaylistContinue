@@ -15,11 +15,11 @@ class PopularityRecommender(Recommender):
         self._ranked: list[int] = []
 
     def fit(self, events: pa.Table) -> None:
-        value_counts = pc.value_counts(events.column("track_id"))
+        value_counts = pc.value_counts(events.column("track_id"))  # type: ignore[attr-defined]
         values = value_counts.field("values")
         counts = value_counts.field("counts")
-        order = pc.sort_indices(counts, sort_keys=[("x", "descending")])
-        self._ranked = pc.take(values, order).to_pylist()
+        order = pc.sort_indices(counts, sort_keys=[("x", "descending")])  # type: ignore[attr-defined]
+        self._ranked = pc.take(values, order).to_pylist()  # type: ignore[no-untyped-call]
 
     def recommend(self, seed_tracks: list[int], n: int = 500) -> list[int]:
         seed_set = set(seed_tracks)

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import numpy as np
 import pyarrow as pa
 import pyarrow.compute as pc
@@ -82,13 +84,13 @@ class SASRecReranker:
         batch_size: int = 256,
         lr: float = 1e-3,
     ) -> None:
-        session_ids = pc.unique(events.column("session_id")).to_pylist()
+        session_ids = pc.unique(events.column("session_id")).to_pylist()  # type: ignore[attr-defined]
         inputs, targets = [], []
         for sid in session_ids:
-            mask = pc.equal(events.column("session_id"), sid)
+            mask = pc.equal(events.column("session_id"), sid)  # type: ignore[attr-defined]
             session = events.filter(mask)
-            order = pc.sort_indices(session, sort_keys=[("timestamp", "ascending")])
-            tracks = pc.take(session.column("track_id"), order).to_pylist()
+            order = pc.sort_indices(session, sort_keys=[("timestamp", "ascending")])  # type: ignore[attr-defined]
+            tracks = pc.take(session.column("track_id"), order).to_pylist()  # type: ignore[no-untyped-call]
             for i in range(1, len(tracks)):
                 inputs.append(self._pad_sequence(tracks[:i]))
                 targets.append(tracks[i])
@@ -111,7 +113,7 @@ class SASRecReranker:
                 logits = user_vec @ all_items.T
                 loss = F.cross_entropy(logits, tgt_batch)
                 opt.zero_grad()
-                loss.backward()
+                loss.backward()  # type: ignore[no-untyped-call]
                 opt.step()
         self._net.eval()
 
@@ -137,4 +139,4 @@ class SASRecReranker:
         import pickle
 
         with open(path, "rb") as f:
-            return pickle.load(f)
+            return cast(SASRecReranker, pickle.load(f))

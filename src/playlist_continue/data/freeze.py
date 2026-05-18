@@ -24,5 +24,5 @@ def freeze_eval_set(
     _train, _val, eval_set = make_splits(sessioned, val_fraction=val_fraction, seed=seed)
     if output_path is not None:
         Path(output_path).parent.mkdir(parents=True, exist_ok=True)
-        pq.write_table(eval_set, output_path)
+        pq.write_table(eval_set, output_path)  # type: ignore[no-untyped-call]
     return eval_set

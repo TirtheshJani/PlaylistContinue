@@ -20,16 +20,16 @@ _CAST_TYPES: dict[str, pa.DataType] = {
 
 def parse_lfm2b_chunk(path: str) -> pa.Table:
     """Read one LFM-2b TSV chunk and return a typed table with 4 columns."""
-    read_opts = pa_csv.ReadOptions(
+    read_opts = pa_csv.ReadOptions(  # type: ignore[attr-defined]
         column_names=_COLUMN_NAMES,
         autogenerate_column_names=False,
     )
-    parse_opts = pa_csv.ParseOptions(delimiter="\t")
-    convert_opts = pa_csv.ConvertOptions(
+    parse_opts = pa_csv.ParseOptions(delimiter="\t")  # type: ignore[attr-defined]
+    convert_opts = pa_csv.ConvertOptions(  # type: ignore[attr-defined]
         include_columns=_KEEP_COLUMNS,
         column_types={col: _CAST_TYPES[col] for col in _KEEP_COLUMNS},
     )
-    return pa_csv.read_csv(
+    return pa_csv.read_csv(  # type: ignore[attr-defined]
         path,
         read_options=read_opts,
         parse_options=parse_opts,
@@ -71,13 +71,13 @@ def write_subsampled_parquet(
                 continue
             if writer is None:
                 schema = filtered.schema
-                writer = pq.ParquetWriter(output_path, schema=schema)
-            writer.write_table(filtered)
+                writer = pq.ParquetWriter(output_path, schema=schema)  # type: ignore[no-untyped-call]
+            writer.write_table(filtered)  # type: ignore[no-untyped-call]
     finally:
         if writer is not None:
-            writer.close()
+            writer.close()  # type: ignore[no-untyped-call]
 
     if writer is None:
         # No data passed the filter - write empty parquet.
         empty = pa.table({col: pa.array([], type=_CAST_TYPES[col]) for col in _KEEP_COLUMNS})
-        pq.write_table(empty, output_path)
+        pq.write_table(empty, output_path)  # type: ignore[no-untyped-call]

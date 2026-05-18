@@ -17,8 +17,8 @@ def derive_sessions(
     Expects columns: user_id (int32), track_id (int32), timestamp (int64).
     Session ids are globally unique monotonic integers.
     """
-    idx = pc.sort_indices(events, sort_keys=[("user_id", "ascending"), ("timestamp", "ascending")])
-    events = pc.take(events, idx)
+    idx = pc.sort_indices(events, sort_keys=[("user_id", "ascending"), ("timestamp", "ascending")])  # type: ignore[attr-defined]
+    events = pc.take(events, idx)  # type: ignore[no-untyped-call]
 
     users = events.column("user_id").to_pylist()
     timestamps = events.column("timestamp").to_pylist()

@@ -34,7 +34,7 @@ def run_comparison(
     Returns: model_name -> {r_precision, ndcg_at_20, recall_at_500}
     """
     train, _val, eval_set = make_splits(sessioned, val_fraction=val_fraction, seed=seed)
-    n_items = int(pc.max(sessioned.column("track_id")).as_py()) + 1
+    n_items = int(pc.max(sessioned.column("track_id")).as_py()) + 1  # type: ignore[attr-defined]
 
     results: dict[str, dict[str, float]] = {}
 

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import numpy as np
 import pyarrow as pa
 import torch
@@ -65,7 +67,7 @@ class TwoTowerModel(Recommender):
                 targets = torch.arange(batch.size(0), device=self.device)
                 loss = F.cross_entropy(logits, targets)
                 opt.zero_grad()
-                loss.backward()
+                loss.backward()  # type: ignore[no-untyped-call]
                 opt.step()
 
         self._net.eval()
@@ -99,4 +101,4 @@ class TwoTowerModel(Recommender):
         import pickle
 
         with open(path, "rb") as f:
-            return pickle.load(f)
+            return cast(TwoTowerModel, pickle.load(f))

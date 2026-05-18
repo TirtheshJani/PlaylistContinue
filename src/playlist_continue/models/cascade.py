@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import numpy as np
 import pyarrow as pa
 import pyarrow.compute as pc
@@ -63,7 +65,7 @@ class CascadeRecommender(Recommender):
         total = len(events)
         if total == 0:
             return
-        value_counts = pc.value_counts(events.column("track_id"))
+        value_counts = pc.value_counts(events.column("track_id"))  # type: ignore[attr-defined]
         for struct in value_counts:
             tid = struct["values"].as_py()
             cnt = struct["counts"].as_py()
@@ -78,7 +80,7 @@ class CascadeRecommender(Recommender):
                 user_vec = self.two_tower._net(seed_t.unsqueeze(0)).squeeze(0).cpu().numpy()
         else:
             user_vec = self.two_tower._item_vecs.mean(axis=0)
-        return self.two_tower._item_vecs[candidates] @ user_vec
+        return self.two_tower._item_vecs[candidates] @ user_vec  # type: ignore[no-any-return]
 
     def _sasrec_scores(self, seed_tracks: list[int], candidates: list[int]) -> np.ndarray:
         seq = self.sasrec._pad_sequence(seed_tracks).unsqueeze(0).to(self.sasrec.device)
@@ -89,7 +91,7 @@ class CascadeRecommender(Recommender):
             user_vec = self.sasrec._net(seq).squeeze(0)
             cand_vecs = F.normalize(self.sasrec._net.item_embed(cand_t), dim=-1)
             scores = (cand_vecs @ user_vec).cpu().numpy()
-        return scores
+        return scores  # type: ignore[no-any-return]
 
     def _build_features(self, seed_tracks: list[int], candidates: list[int]) -> np.ndarray:
         ret_scores = self._retrieval_scores(seed_tracks, candidates)
@@ -98,14 +100,14 @@ class CascadeRecommender(Recommender):
         return np.column_stack([ret_scores, sas_scores, pop_scores]).astype(np.float32)
 
     def _generate_lgbm_data(self, events: pa.Table) -> tuple[np.ndarray, np.ndarray]:
-        session_ids = pc.unique(events.column("session_id")).to_pylist()
+        session_ids = pc.unique(events.column("session_id")).to_pylist()  # type: ignore[attr-defined]
         X_rows: list[np.ndarray] = []
         y_rows: list[int] = []
         for sid in session_ids:
-            mask = pc.equal(events.column("session_id"), sid)
+            mask = pc.equal(events.column("session_id"), sid)  # type: ignore[attr-defined]
             session = events.filter(mask)
-            order = pc.sort_indices(session, sort_keys=[("timestamp", "ascending")])
-            tracks = pc.take(session.column("track_id"), order).to_pylist()
+            order = pc.sort_indices(session, sort_keys=[("timestamp", "ascending")])  # type: ignore[attr-defined]
+            tracks = pc.take(session.column("track_id"), order).to_pylist()  # type: ignore[no-untyped-call]
             if len(tracks) < 2:
                 continue
             n_seed = max(1, len(tracks) // 2)
@@ -150,4 +152,4 @@ class CascadeRecommender(Recommender):
         import pickle
 
         with open(path, "rb") as f:
-            return pickle.load(f)
+            return cast(CascadeRecommender, pickle.load(f))

@@ -35,7 +35,7 @@ def make_splits(
     train_sids = set(remaining[n_val:])
 
     def _filter(sids: set[int]) -> pa.Table:
-        mask = pc.is_in(
+        mask = pc.is_in(  # type: ignore[attr-defined]
             sessioned.column("session_id"),
             value_set=pa.array(list(sids), type=pa.int64()),
         )
