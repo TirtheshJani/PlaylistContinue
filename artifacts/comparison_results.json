@@ -1,0 +1,46 @@
+{
+  "dataset": "synthetic_lfm2b",
+  "n_users": 2000,
+  "n_tracks": 5000,
+  "n_artists": 500,
+  "n_events": 200000,
+  "n_sessions": 26014,
+  "n_eval_events": 9990,
+  "seed": 42,
+  "embed_dim": 32,
+  "epochs": 2,
+  "batch_size": 512,
+  "comparison_seconds": 481.41,
+  "metrics": {
+    "popularity": {
+      "r_precision": 0.04783477149248961,
+      "ndcg_at_20": 0.09584229909132495,
+      "recall_at_500": 0.5162671780121445
+    },
+    "artist_cooccurrence": {
+      "r_precision": 0.03749600511345478,
+      "ndcg_at_20": 0.05810792555953002,
+      "recall_at_500": 0.2654402364972835
+    },
+    "track2vec": {
+      "r_precision": 0.007486417385746245,
+      "ndcg_at_20": 0.01567783455808554,
+      "recall_at_500": 0.3532891232555662
+    },
+    "two_tower": {
+      "r_precision": 0.00011185682326621924,
+      "ndcg_at_20": 0.0010840530277313907,
+      "recall_at_500": 0.07776934412840453
+    },
+    "two_tower_sasrec": {
+      "r_precision": 0.00930098362984269,
+      "ndcg_at_20": 0.0193442807407018,
+      "recall_at_500": 0.07643904690884558
+    },
+    "cascade": {
+      "r_precision": 0.012087195056993714,
+      "ndcg_at_20": 0.02255994283744327,
+      "recall_at_500": 0.057301320975817624
+    }
+  }
+}

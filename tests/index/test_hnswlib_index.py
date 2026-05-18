@@ -1,7 +1,10 @@
 import numpy as np
+import pytest
 
-from playlist_continue.index.base import BaseIndex
-from playlist_continue.index.hnswlib_index import HnswlibIndex
+pytest.importorskip("hnswlib")
+
+from playlist_continue.index.base import BaseIndex  # noqa: E402
+from playlist_continue.index.hnswlib_index import HnswlibIndex  # noqa: E402
 
 
 def _unit_vecs(n: int, d: int, seed: int = 0) -> np.ndarray:

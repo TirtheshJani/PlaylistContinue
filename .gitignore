@@ -23,3 +23,14 @@ results.json
 # frontend
 frontend/node_modules/
 frontend/dist/
+
+# generated data
+data/raw_synthetic/
+data/processed/*.parquet
+data/eval/*.parquet
+models/*.pkl
+
+# transient run artifacts; only comparison_results.json is checked in
+artifacts/*.log
+artifacts/comparison_smoke.json
+artifacts/full_run_smoke.log
