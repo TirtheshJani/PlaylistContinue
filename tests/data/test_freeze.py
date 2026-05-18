@@ -1,6 +1,5 @@
 import pyarrow as pa
 import pyarrow.parquet as pq
-import pytest
 
 from playlist_continue.data.freeze import freeze_eval_set
 from playlist_continue.data.lfm2b import derive_sessions
@@ -39,7 +38,11 @@ def test_freeze_eval_set_no_duplicate_sessions_per_user(tiny_events_table):
     sessioned = derive_sessions(tiny_events_table)
     result = freeze_eval_set(sessioned, seed=42)
     user_session_pairs = set(
-        zip(result.column("user_id").to_pylist(), result.column("session_id").to_pylist())
+        zip(
+            result.column("user_id").to_pylist(),
+            result.column("session_id").to_pylist(),
+            strict=False,
+        )
     )
     users = set(result.column("user_id").to_pylist())
     assert len(user_session_pairs) == len(users), "each user must have exactly one eval session"

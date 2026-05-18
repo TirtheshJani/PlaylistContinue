@@ -9,6 +9,7 @@ Usage:
 The saved model can be loaded by the serve container via:
     MODEL_PATH=models/cascade.pkl uvicorn playlist_continue.serve.main:app
 """
+
 from __future__ import annotations
 
 import argparse

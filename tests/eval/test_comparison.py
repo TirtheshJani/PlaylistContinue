@@ -1,5 +1,3 @@
-import pyarrow as pa
-
 from playlist_continue.data.lfm2b import derive_sessions
 from playlist_continue.eval.comparison import run_comparison
 

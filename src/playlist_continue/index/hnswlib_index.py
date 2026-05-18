@@ -1,8 +1,9 @@
 """HnswlibIndex: hnswlib-based ANN index, ARM-compatible alternative to FAISS."""
+
 from __future__ import annotations
 
-import numpy as np
 import hnswlib
+import numpy as np
 
 from playlist_continue.index.base import BaseIndex
 
@@ -22,7 +23,9 @@ class HnswlibIndex(BaseIndex):
         """Build from (N, dim) float32 unit-norm vectors."""
         n = vectors.shape[0]
         self._index = hnswlib.Index(space="ip", dim=self.dim)
-        self._index.init_index(max_elements=max(n, self.max_elements), ef_construction=200, M=self.M)
+        self._index.init_index(
+            max_elements=max(n, self.max_elements), ef_construction=200, M=self.M
+        )
         self._index.add_items(vectors.astype(np.float32), list(range(n)))
         self._index.set_ef(self.ef)
         self._n_items = n

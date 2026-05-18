@@ -1,4 +1,5 @@
 """Uvicorn entrypoint. Loads a pickled model from MODEL_PATH or falls back to popularity stub."""
+
 from __future__ import annotations
 
 import os

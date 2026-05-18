@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """End-to-end pipeline: subsample -> sessions -> splits -> train -> eval."""
+
 from __future__ import annotations
 
 import argparse

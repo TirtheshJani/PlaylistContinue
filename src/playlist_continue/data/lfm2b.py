@@ -1,4 +1,5 @@
 """LFM-2b ingestion and session derivation."""
+
 from __future__ import annotations
 
 import pyarrow as pa
@@ -16,9 +17,7 @@ def derive_sessions(
     Expects columns: user_id (int32), track_id (int32), timestamp (int64).
     Session ids are globally unique monotonic integers.
     """
-    idx = pc.sort_indices(
-        events, sort_keys=[("user_id", "ascending"), ("timestamp", "ascending")]
-    )
+    idx = pc.sort_indices(events, sort_keys=[("user_id", "ascending"), ("timestamp", "ascending")])
     events = pc.take(events, idx)
 
     users = events.column("user_id").to_pylist()
@@ -29,7 +28,7 @@ def derive_sessions(
     prev_user: int | None = None
     prev_ts: int = 0
 
-    for user, ts in zip(users, timestamps):
+    for user, ts in zip(users, timestamps, strict=False):
         if user != prev_user:
             current_session += 1
             prev_user = user

@@ -1,4 +1,5 @@
 """Artist co-occurrence recommender: seed artists -> co-occurring artists -> their tracks."""
+
 from __future__ import annotations
 
 from collections import Counter, defaultdict
@@ -22,12 +23,12 @@ class ArtistCooccurrenceRecommender(Recommender):
         # Build track -> artist and artist -> tracks mappings.
         track_ids = events.column("track_id").to_pylist()
         artist_ids = events.column("artist_id").to_pylist()
-        for t, a in zip(track_ids, artist_ids):
+        for t, a in zip(track_ids, artist_ids, strict=False):
             self._track_to_artist[t] = a
         self._global_popularity = Counter(track_ids)
 
         # artist -> tracks sorted by popularity descending.
-        for t, a in zip(track_ids, artist_ids):
+        for t, a in zip(track_ids, artist_ids, strict=False):
             if t not in self._artist_tracks[a]:
                 self._artist_tracks[a].append(t)
         for a in self._artist_tracks:

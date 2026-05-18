@@ -1,4 +1,5 @@
 """Eval harness: run a Recommender against the frozen eval split."""
+
 from __future__ import annotations
 
 import pyarrow as pa

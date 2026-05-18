@@ -1,8 +1,9 @@
 """LightGBM final-scoring head for the three-stage cascade."""
+
 from __future__ import annotations
 
-import numpy as np
 import lightgbm as lgb
+import numpy as np
 
 
 class LGBMScoringHead:
@@ -30,11 +31,13 @@ class LGBMScoringHead:
 
     def save(self, path: str) -> None:
         import pickle
+
         with open(path, "wb") as f:
             pickle.dump(self, f)
 
     @classmethod
-    def load(cls, path: str) -> "LGBMScoringHead":
+    def load(cls, path: str) -> LGBMScoringHead:
         import pickle
+
         with open(path, "rb") as f:
             return pickle.load(f)

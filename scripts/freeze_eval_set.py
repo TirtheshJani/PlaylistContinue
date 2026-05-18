@@ -7,6 +7,7 @@ The output file data/eval/eval_set.parquet is never regenerated.
 Usage:
     python scripts/freeze_eval_set.py --events data/processed/events.parquet
 """
+
 from __future__ import annotations
 
 import argparse
@@ -32,7 +33,8 @@ def main() -> None:
 
     print(f"Freezing eval set -> {args.output}")
     eval_set = freeze_eval_set(sessioned, seed=args.seed, output_path=args.output)
-    print(f"Wrote {len(eval_set):,} eval events ({len(set(eval_set.column('user_id').to_pylist())):,} users)")
+    n_users = len(set(eval_set.column("user_id").to_pylist()))
+    print(f"Wrote {len(eval_set):,} eval events ({n_users:,} users)")
 
 
 if __name__ == "__main__":

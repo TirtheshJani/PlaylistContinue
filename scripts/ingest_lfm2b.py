@@ -2,13 +2,15 @@
 """Ingest raw LFM-2b TSV chunks into a single subsampled parquet file.
 
 Usage:
-    python scripts/ingest_lfm2b.py --input-dir /data/lfm2b/raw/ --output data/processed/events.parquet
+    python scripts/ingest_lfm2b.py --input-dir /data/lfm2b/raw/ \
+        --output data/processed/events.parquet
 
 The raw LFM-2b files are tab-separated with columns:
     user_id  artist_id  artist_name  track_id  track_name  timestamp
 
 Download LFM-2b from: http://www.cp.jku.at/datasets/LFM-2b/
 """
+
 from __future__ import annotations
 
 import argparse
@@ -22,9 +24,15 @@ from playlist_continue.data.ingest import write_subsampled_parquet
 def main() -> None:
     parser = argparse.ArgumentParser(description="Ingest LFM-2b raw TSV files to parquet.")
     parser.add_argument("--input-dir", required=True, help="Directory containing LFM-2b TSV chunks")
-    parser.add_argument("--output", default="data/processed/events.parquet", help="Output parquet path")
-    parser.add_argument("--n-top-tracks", type=int, default=1_000_000, help="Keep top-N tracks by play count")
-    parser.add_argument("--n-top-users", type=int, default=50_000, help="Keep top-K users by activity")
+    parser.add_argument(
+        "--output", default="data/processed/events.parquet", help="Output parquet path"
+    )
+    parser.add_argument(
+        "--n-top-tracks", type=int, default=1_000_000, help="Keep top-N tracks by play count"
+    )
+    parser.add_argument(
+        "--n-top-users", type=int, default=50_000, help="Keep top-K users by activity"
+    )
     parser.add_argument("--glob", default="*.tsv", help="Glob pattern for TSV files")
     args = parser.parse_args()
 

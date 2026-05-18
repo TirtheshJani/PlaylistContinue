@@ -1,4 +1,5 @@
 """Two-tower retrieval + SASRec reranker (no LightGBM head)."""
+
 from __future__ import annotations
 
 import pyarrow as pa

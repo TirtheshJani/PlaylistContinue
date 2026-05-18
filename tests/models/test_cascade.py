@@ -23,19 +23,25 @@ def cascade_events() -> pa.Table:
 
 
 def test_cascade_fit_runs(cascade_events):
-    model = CascadeRecommender(n_items=8, retrieval_k=6, rerank_k=4, embed_dim=8, max_seq_len=4, n_heads=2, n_layers=1)
+    model = CascadeRecommender(
+        n_items=8, retrieval_k=6, rerank_k=4, embed_dim=8, max_seq_len=4, n_heads=2, n_layers=1
+    )
     model.fit(cascade_events, two_tower_epochs=1, sasrec_epochs=1, two_tower_batch=4)
 
 
 def test_cascade_recommend_returns_list(cascade_events):
-    model = CascadeRecommender(n_items=8, retrieval_k=6, rerank_k=4, embed_dim=8, max_seq_len=4, n_heads=2, n_layers=1)
+    model = CascadeRecommender(
+        n_items=8, retrieval_k=6, rerank_k=4, embed_dim=8, max_seq_len=4, n_heads=2, n_layers=1
+    )
     model.fit(cascade_events, two_tower_epochs=1, sasrec_epochs=1, two_tower_batch=4)
     recs = model.recommend(seed_tracks=[0, 1], n=4)
     assert isinstance(recs, list)
 
 
 def test_cascade_recommend_excludes_seed(cascade_events):
-    model = CascadeRecommender(n_items=8, retrieval_k=6, rerank_k=4, embed_dim=8, max_seq_len=4, n_heads=2, n_layers=1)
+    model = CascadeRecommender(
+        n_items=8, retrieval_k=6, rerank_k=4, embed_dim=8, max_seq_len=4, n_heads=2, n_layers=1
+    )
     model.fit(cascade_events, two_tower_epochs=1, sasrec_epochs=1, two_tower_batch=4)
     recs = model.recommend(seed_tracks=[0, 1], n=8)
     assert 0 not in recs
@@ -43,14 +49,18 @@ def test_cascade_recommend_excludes_seed(cascade_events):
 
 
 def test_cascade_recommend_respects_n(cascade_events):
-    model = CascadeRecommender(n_items=8, retrieval_k=6, rerank_k=4, embed_dim=8, max_seq_len=4, n_heads=2, n_layers=1)
+    model = CascadeRecommender(
+        n_items=8, retrieval_k=6, rerank_k=4, embed_dim=8, max_seq_len=4, n_heads=2, n_layers=1
+    )
     model.fit(cascade_events, two_tower_epochs=1, sasrec_epochs=1, two_tower_batch=4)
     recs = model.recommend(seed_tracks=[0], n=3)
     assert len(recs) <= 3
 
 
 def test_cascade_returns_ints(cascade_events):
-    model = CascadeRecommender(n_items=8, retrieval_k=6, rerank_k=4, embed_dim=8, max_seq_len=4, n_heads=2, n_layers=1)
+    model = CascadeRecommender(
+        n_items=8, retrieval_k=6, rerank_k=4, embed_dim=8, max_seq_len=4, n_heads=2, n_layers=1
+    )
     model.fit(cascade_events, two_tower_epochs=1, sasrec_epochs=1, two_tower_batch=4)
     recs = model.recommend(seed_tracks=[0], n=5)
     assert all(isinstance(r, int) for r in recs)

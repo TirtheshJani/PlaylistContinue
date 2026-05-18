@@ -1,7 +1,7 @@
 """Tests for model save/load persistence."""
-import pyarrow as pa
-import pytest
+
 import numpy as np
+import pyarrow as pa
 
 
 def _tiny_events() -> pa.Table:
@@ -20,6 +20,7 @@ def _tiny_events() -> pa.Table:
 
 def test_two_tower_save_load_same_recommendations(tmp_path):
     from playlist_continue.models.two_tower import TwoTowerModel
+
     events = _tiny_events()
     model = TwoTowerModel(n_items=8, embed_dim=8)
     model.fit(events, epochs=1, batch_size=4)
@@ -31,6 +32,7 @@ def test_two_tower_save_load_same_recommendations(tmp_path):
 
 def test_sasrec_save_load_same_reranking(tmp_path):
     from playlist_continue.models.sasrec import SASRecReranker
+
     events = _tiny_events()
     model = SASRecReranker(n_items=8, max_seq_len=4, n_heads=2, n_layers=1, embed_dim=8)
     model.fit(events, epochs=1, batch_size=4)
@@ -43,6 +45,7 @@ def test_sasrec_save_load_same_reranking(tmp_path):
 
 def test_lgbm_save_load_same_scores(tmp_path):
     from playlist_continue.models.lgbm_head import LGBMScoringHead
+
     rng = np.random.default_rng(0)
     X = rng.random((30, 3)).astype(np.float32)
     y = rng.integers(0, 2, 30).astype(np.float32)
@@ -56,6 +59,7 @@ def test_lgbm_save_load_same_scores(tmp_path):
 
 def test_cascade_save_load_returns_list(tmp_path):
     from playlist_continue.models.cascade import CascadeRecommender
+
     events = _tiny_events()
     model = CascadeRecommender(
         n_items=8, retrieval_k=6, rerank_k=4, embed_dim=8, max_seq_len=4, n_heads=2, n_layers=1

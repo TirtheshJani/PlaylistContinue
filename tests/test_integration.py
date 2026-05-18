@@ -1,6 +1,6 @@
 """End-to-end integration smoke test: synthetic data through full pipeline."""
+
 import pyarrow as pa
-import pytest
 
 
 def _make_events(n_users: int = 10, n_tracks: int = 12, sessions_per_user: int = 3) -> pa.Table:
@@ -27,9 +27,7 @@ def _make_events(n_users: int = 10, n_tracks: int = 12, sessions_per_user: int =
     return pa.table(
         {
             "user_id": pa.array(user_ids, type=pa.int32()),
-            "artist_id": pa.array(
-                [tid % 4 for tid in track_ids], type=pa.int32()
-            ),
+            "artist_id": pa.array([tid % 4 for tid in track_ids], type=pa.int32()),
             "track_id": pa.array(track_ids, type=pa.int32()),
             "timestamp": pa.array(timestamps, type=pa.int64()),
             "session_id": pa.array(session_ids, type=pa.int64()),
@@ -92,7 +90,6 @@ def test_run_comparison_all_scores_valid():
 
 def test_api_recommend_with_popularity_model():
     """FastAPI /recommend endpoint returns valid response."""
-    import pyarrow as pa
     from fastapi.testclient import TestClient
 
     from playlist_continue.models.popularity import PopularityRecommender

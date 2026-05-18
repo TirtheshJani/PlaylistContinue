@@ -1,4 +1,5 @@
 """Subsample LFM-2b to top-N tracks and top-K users by play count."""
+
 from __future__ import annotations
 
 import pyarrow as pa

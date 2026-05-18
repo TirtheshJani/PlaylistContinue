@@ -1,4 +1,5 @@
 """Three-stage cascade: two-tower retrieval -> SASRec reranker -> LightGBM scorer."""
+
 from __future__ import annotations
 
 import numpy as np
@@ -140,11 +141,13 @@ class CascadeRecommender(Recommender):
 
     def save(self, path: str) -> None:
         import pickle
+
         with open(path, "wb") as f:
             pickle.dump(self, f)
 
     @classmethod
-    def load(cls, path: str) -> "CascadeRecommender":
+    def load(cls, path: str) -> CascadeRecommender:
         import pickle
+
         with open(path, "rb") as f:
             return pickle.load(f)

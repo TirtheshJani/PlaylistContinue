@@ -1,8 +1,9 @@
 """FAISS IndexFlatIP wrapper for item retrieval."""
+
 from __future__ import annotations
 
-import numpy as np
 import faiss
+import numpy as np
 
 from playlist_continue.index.base import BaseIndex
 

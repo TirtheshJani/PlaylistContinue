@@ -20,6 +20,7 @@ def test_eval_set_contains_one_session_per_user(tiny_events_table):
         zip(
             eval_set.column("user_id").to_pylist(),
             eval_set.column("session_id").to_pylist(),
+            strict=False,
         )
     )
     assert len(user_session_pairs) == len(eval_users)

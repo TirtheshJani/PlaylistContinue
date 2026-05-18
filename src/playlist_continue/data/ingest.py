@@ -1,9 +1,9 @@
 """LFM-2b raw TSV ingestion: parse chunks, subsample, write parquet."""
+
 from __future__ import annotations
 
 import pyarrow as pa
 import pyarrow.csv as pa_csv
-import pyarrow.compute as pc
 import pyarrow.parquet as pq
 
 from playlist_continue.data.subsample import compute_top_ids, filter_events
@@ -29,7 +29,12 @@ def parse_lfm2b_chunk(path: str) -> pa.Table:
         include_columns=_KEEP_COLUMNS,
         column_types={col: _CAST_TYPES[col] for col in _KEEP_COLUMNS},
     )
-    return pa_csv.read_csv(path, read_options=read_opts, parse_options=parse_opts, convert_options=convert_opts)
+    return pa_csv.read_csv(
+        path,
+        read_options=read_opts,
+        parse_options=parse_opts,
+        convert_options=convert_opts,
+    )
 
 
 def write_subsampled_parquet(
@@ -74,7 +79,5 @@ def write_subsampled_parquet(
 
     if writer is None:
         # No data passed the filter - write empty parquet.
-        empty = pa.table(
-            {col: pa.array([], type=_CAST_TYPES[col]) for col in _KEEP_COLUMNS}
-        )
+        empty = pa.table({col: pa.array([], type=_CAST_TYPES[col]) for col in _KEEP_COLUMNS})
         pq.write_table(empty, output_path)

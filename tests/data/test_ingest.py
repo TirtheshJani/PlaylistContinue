@@ -1,9 +1,7 @@
-import tempfile
 from pathlib import Path
 
 import pyarrow as pa
 import pyarrow.parquet as pq
-import pytest
 
 from playlist_continue.data.ingest import parse_lfm2b_chunk, write_subsampled_parquet
 

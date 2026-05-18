@@ -1,4 +1,5 @@
 """MPD challenge evaluation metrics: R-precision, NDCG@k, Recall@k."""
+
 from __future__ import annotations
 
 import math
@@ -18,9 +19,7 @@ def ndcg_at_k(recommendations: list[int], ground_truth: set[int], k: int = 20) -
     if not ground_truth:
         return 0.0
     dcg = sum(
-        1.0 / math.log2(i + 2)
-        for i, item in enumerate(recommendations[:k])
-        if item in ground_truth
+        1.0 / math.log2(i + 2) for i, item in enumerate(recommendations[:k]) if item in ground_truth
     )
     n_ideal = min(len(ground_truth), k)
     idcg = sum(1.0 / math.log2(i + 2) for i in range(n_ideal))

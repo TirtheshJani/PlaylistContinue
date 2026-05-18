@@ -1,4 +1,5 @@
 """Track2Vec: Word2Vec trained on listening session sequences."""
+
 from __future__ import annotations
 
 import logging

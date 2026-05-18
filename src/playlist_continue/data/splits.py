@@ -1,4 +1,5 @@
 """Train / val / eval split creation for the LFM-2b corpus."""
+
 from __future__ import annotations
 
 import numpy as np
@@ -20,7 +21,7 @@ def make_splits(
     session_ids = sessioned.column("session_id").to_pylist()
 
     last_session: dict[int, int] = {}
-    for uid, sid in zip(user_ids, session_ids):
+    for uid, sid in zip(user_ids, session_ids, strict=False):
         if uid not in last_session or sid > last_session[uid]:
             last_session[uid] = sid
 

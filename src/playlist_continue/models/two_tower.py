@@ -1,4 +1,5 @@
 """Two-tower retrieval model with in-batch sampled-softmax."""
+
 from __future__ import annotations
 
 import numpy as np
@@ -47,7 +48,9 @@ class TwoTowerModel(Recommender):
         lr: float = 1e-3,
     ) -> None:
         track_ids = torch.tensor(events.column("track_id").to_pylist(), dtype=torch.long)
-        loader = DataLoader(TensorDataset(track_ids), batch_size=batch_size, shuffle=True, drop_last=True)
+        loader = DataLoader(
+            TensorDataset(track_ids), batch_size=batch_size, shuffle=True, drop_last=True
+        )
         opt = torch.optim.Adam(self._net.parameters(), lr=lr)
 
         self._net.train()
@@ -81,11 +84,13 @@ class TwoTowerModel(Recommender):
 
     def save(self, path: str) -> None:
         import pickle
+
         with open(path, "wb") as f:
             pickle.dump(self, f)
 
     @classmethod
-    def load(cls, path: str) -> "TwoTowerModel":
+    def load(cls, path: str) -> TwoTowerModel:
         import pickle
+
         with open(path, "rb") as f:
             return pickle.load(f)

@@ -1,5 +1,4 @@
 import numpy as np
-import pytest
 
 from playlist_continue.index.base import BaseIndex
 from playlist_continue.index.hnswlib_index import HnswlibIndex

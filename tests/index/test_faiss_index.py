@@ -41,6 +41,7 @@ def test_save_and_load_gives_same_results(tmp_path):
 
 def test_faiss_index_is_base_index_instance():
     from playlist_continue.index.base import BaseIndex
+
     vecs = _unit_vecs(10, 8)
     idx = FaissIndex(dim=8)
     idx.build(vecs)

@@ -1,4 +1,5 @@
 """FastAPI serving endpoint for playlist continuation."""
+
 from __future__ import annotations
 
 from fastapi import FastAPI

@@ -1,4 +1,5 @@
 """SASRec: causal self-attention reranker over listening sequences."""
+
 from __future__ import annotations
 
 import numpy as np
@@ -127,11 +128,13 @@ class SASRecReranker:
 
     def save(self, path: str) -> None:
         import pickle
+
         with open(path, "wb") as f:
             pickle.dump(self, f)
 
     @classmethod
-    def load(cls, path: str) -> "SASRecReranker":
+    def load(cls, path: str) -> SASRecReranker:
         import pickle
+
         with open(path, "rb") as f:
             return pickle.load(f)

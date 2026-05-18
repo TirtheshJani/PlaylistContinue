@@ -6,6 +6,7 @@ Usage:
 
 Output: table of R-precision, NDCG@20, Recall@500 for each model.
 """
+
 from __future__ import annotations
 
 import argparse
