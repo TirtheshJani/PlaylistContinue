@@ -41,3 +41,12 @@ def test_two_tower_recommend_returns_ints(tiny_events):
     model.fit(tiny_events, epochs=1, batch_size=4)
     recs = model.recommend(seed_tracks=[0], n=3)
     assert all(isinstance(r, int) for r in recs)
+
+
+def test_two_tower_builds_faiss_index_after_fit(tiny_events):
+    from playlist_continue.index.base import BaseIndex
+
+    model = TwoTowerModel(n_items=5, embed_dim=8)
+    model.fit(tiny_events, epochs=1, batch_size=4)
+    assert hasattr(model, "_index")
+    assert isinstance(model._index, BaseIndex)
